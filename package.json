@@ -2,7 +2,10 @@
   "name": "cluster-rolling-restart",
   "author": {
     "name": "Tyson Midboe",
-    "url": ""
+    "url": "https://github.com/module-federation/MicroLib"
+  },
+  "repository": {
+    "url": "https://github.com/tysonrm/cluster-rolling-restart"
   },
   "devDependencies": {
     "express": "^4.17.1"
