@@ -46,7 +46,10 @@ function stopWorker() {
  */
 function continueReload() {
   const yes = reloading === true && reloadList.length > 0;
-  if (!yes) reloading = false;
+  if (!yes) {
+    if (reloading) console.log("reload complete");
+    reloading = false;
+  }
   return yes;
 }
 
@@ -61,8 +64,8 @@ module.exports.startCluster = function (startService, app) {
     });
 
     // Worker started. If reloading, stop the next one.
-    cluster.on("online", function () {
-      console.log("worker up");
+    cluster.on("online", function (worker) {
+      console.log("worker up", worker.process.pid);
       if (continueReload()) {
         stopWorker();
       }
