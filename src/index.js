@@ -37,7 +37,11 @@ function startWorker() {
  */
 function stopWorker() {
   const worker = reloadList.pop();
-  worker.kill("SIGTERM");
+  if (worker) worker.kill("SIGTERM");
+  else {
+    reloading = false;
+    console.log("reload complete");
+  }
 }
 
 /**
@@ -45,12 +49,7 @@ function stopWorker() {
  * @returns {boolean} true to continue, otherwise stop
  */
 function continueReload() {
-  const yes = reloading === true && reloadList.length > 0;
-  if (!yes) {
-    if (reloading) console.log("reload complete");
-    reloading = false;
-  }
-  return yes;
+  return reloading;
 }
 
 module.exports.startCluster = function (startService, app) {
