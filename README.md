@@ -25,7 +25,7 @@ require("../src/index").startCluster(startServer, app);
 ## output
 
 ```shell
->sysctl -n hw.ncpu
+> sysctl -n hw.ncpu
 8
 
 > start
