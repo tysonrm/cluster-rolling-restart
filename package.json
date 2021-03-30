@@ -1,6 +1,6 @@
 {
   "name": "cluster-rolling-restart",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": {
     "name": "Tyson Midboe",
     "url": "https://github.com/module-federation/MicroLib"
