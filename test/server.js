@@ -8,8 +8,8 @@ app.get("/reload", (req, res) => {
   process.send({ cmd: "reload" });
 });
 
-function startServer(app) {
+function startServer() {
   app.listen(8080);
 }
 
-require("../index").startCluster(startServer, app);
+require("../index").startCluster(startServer);

@@ -65,23 +65,22 @@ function continueReload() {
  * const cluster = require("cluster-rolling-restart");
  * const express = require("express");
  * const app = express();
- * 
+ *
  * app.get("/", (req, res) => res.send(`<h1>Hi from pid ${process.pid}</h1>`));
- * 
+ *
  * app.get("/reload", (req, res) => {
  *  res.send("performing rolling restart of cluster");
  *  process.send({ cmd: "reload" });
  * });
- * 
+ *
  * function startServer(app) {
  *  app.listen(8080);
  * }
- * 
+ *
  * cluster.startCluster(startServer, app);
-
  * ```
  */
-module.exports.startCluster = function (startService, app, waitms = 2000) {
+module.exports.startCluster = function (startService, waitms = 2000) {
   if (cluster.isMaster) {
     // Worker stopped. If reloading, start a new one.
     cluster.on("exit", function (worker) {
