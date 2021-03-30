@@ -2,16 +2,16 @@
 
 Simple way to turn any express server into a cluster with support for rolling restart.
 
-## Install
+## install
 
 ```shell
 npm install cluster-rolling-restart
 ```
 
-## Usage
+## server.js
 
 ```js
-const cluster = require("rolling-restart-cluster");
+const cluster = require("cluster-rolling-restart");
 const express = require("express");
 const app = express();
 
@@ -29,14 +29,14 @@ function startServer(app) {
 cluster.startCluster(startServer, app);
 ```
 
-## Output
+## output
 
 ```shell
 > sysctl -n hw.ncpu
 8
 
 > start
-> node test/server.js
+> node server.js
 
 master starting 8 workers 🌎
 worker up 77653
@@ -49,13 +49,13 @@ worker up 77656
 worker up 77659
 ```
 
-## Trigger restart
+## trigger restart
 
 ```shell
 > curl http://localhost:8080/reload
 ```
 
-## Server output
+## output
 
 ```shell
 reload requested 👍
