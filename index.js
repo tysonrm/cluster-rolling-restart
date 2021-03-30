@@ -35,9 +35,9 @@ function startWorker() {
 /**
  * Gracefully stop a worker on the reload list.
  */
-function stopWorker() {
+function stopWorker(waitms = 2000) {
   const worker = reloadList.pop();
-  if (worker) worker.kill("SIGTERM");
+  if (worker) setTimeout(() => worker.kill("SIGTERM"), waitms);
   else {
     reloading = false;
     console.log("reload complete ✅");
@@ -52,7 +52,7 @@ function continueReload() {
   return reloading;
 }
 
-module.exports.startCluster = function (startService, app) {
+module.exports.startCluster = function (startService, app, waitms = 2000) {
   if (cluster.isMaster) {
     // Worker stopped. If reloading, start a new one.
     cluster.on("exit", function (worker) {
@@ -66,7 +66,7 @@ module.exports.startCluster = function (startService, app) {
     cluster.on("online", function (worker) {
       console.log("worker up", worker.process.pid);
       if (continueReload()) {
-        stopWorker();
+        stopWorker(waitms);
       }
     });
 

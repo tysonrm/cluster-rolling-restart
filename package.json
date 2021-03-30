@@ -1,6 +1,6 @@
 {
   "name": "cluster-rolling-restart",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "author": {
     "name": "Tyson Midboe",
     "url": "https://github.com/module-federation/MicroLib"
@@ -22,6 +22,12 @@
     "cluster",
     "zero downtime",
     "hot deploy",
-    "hot reload"
+    "hot reload",
+    "zero",
+    "downtime",
+    "rolling",
+    "restart",
+    "hot",
+    "deploy"
   ]
 }
