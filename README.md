@@ -16,7 +16,7 @@ app.get("/reload", (req, res) => {
 });
 
 function startServer(app) {
-  app.listen(8080, () => "server up");
+  app.listen(8080);
 }
 
 require("../src/index").startCluster(startServer, app);
@@ -32,30 +32,30 @@ require("../src/index").startCluster(startServer, app);
 > node test/server.js
 
 master starting 8 workers
-worker up 75455
-worker up 75456
-worker up 75457
-worker up 75458
-worker up 75460
-worker up 75459
-worker up 75461
-worker up 75462
+worker up 75693
+worker up 75692
+worker up 75694
+worker up 75695
+worker up 75697
+worker up 75696
+worker up 75698
+worker up 75699
 reload requested
 worker down
-worker up 75466
+worker up 75702
 worker down
-worker up 75467
+worker up 75703
 worker down
-worker up 75468
+worker up 75704
 worker down
-worker up 75469
+worker up 75705
 worker down
-worker up 75470
+worker up 75706
 worker down
-worker up 75471
+worker up 75707
 worker down
-worker up 75472
+worker up 75708
 worker down
-worker up 75473
+worker up 75709
 reload complete
 ```

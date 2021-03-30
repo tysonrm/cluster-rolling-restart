@@ -9,7 +9,7 @@ app.get("/reload", (req, res) => {
 });
 
 function startServer(app) {
-  app.listen(8080, () => "server up");
+  app.listen(8080);
 }
 
 require("../src/index").startCluster(startServer, app);
