@@ -55,8 +55,8 @@ function continueReload() {
 module.exports.startCluster = function (startService, app) {
   if (cluster.isMaster) {
     // Worker stopped. If reloading, start a new one.
-    cluster.on("exit", function () {
-      console.log("worker down 🔻");
+    cluster.on("exit", function (worker) {
+      console.log("worker down", worker.process.pid);
       if (continueReload()) {
         startWorker();
       }
