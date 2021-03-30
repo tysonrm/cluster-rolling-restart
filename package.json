@@ -1,0 +1,16 @@
+{
+  "name": "cluster-rolling-restart",
+  "author": {
+    "name": "Tyson Midboe",
+    "url": ""
+  },
+  "devDependencies": {
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "start": "node test/server.js",
+    "demo": "open http://localhost:8080",
+    "demo2": "curl http://localhost:8080",
+    "hot-reload": "curl http://localhost:8080/reload"
+  }
+}
