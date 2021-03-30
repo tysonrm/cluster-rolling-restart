@@ -1,6 +1,6 @@
 # cluster-rolling-restart
 
-Simple way to turn any express server into a cluster with support for rolling restart.
+A simple way to turn express into a clustered server with support for rolling restart.
 
 ## install
 
@@ -26,7 +26,7 @@ function startServer(app) {
   app.listen(8080);
 }
 
-cluster.startCluster(startServer, app);
+cluster.startCluster(startServer, app, 1000);
 ```
 
 ## output
