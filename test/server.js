@@ -12,4 +12,4 @@ function startServer(app) {
   app.listen(8080);
 }
 
-require("../src/index").startCluster(startServer, app);
+require("../index").startCluster(startServer, app);

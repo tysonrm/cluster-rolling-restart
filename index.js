@@ -16,7 +16,7 @@ function startWorker() {
 
   worker.on("message", function (message) {
     if (message.cmd === "reload") {
-      console.log("reload requested");
+      console.log("reload requested 👍");
       if (reloading) {
         console.log("reload already in progress");
         return;
@@ -40,7 +40,7 @@ function stopWorker() {
   if (worker) worker.kill("SIGTERM");
   else {
     reloading = false;
-    console.log("reload complete");
+    console.log("reload complete ✅");
   }
 }
 
@@ -56,7 +56,7 @@ module.exports.startCluster = function (startService, app) {
   if (cluster.isMaster) {
     // Worker stopped. If reloading, start a new one.
     cluster.on("exit", function () {
-      console.log("worker down");
+      console.log("worker down 🔻");
       if (continueReload()) {
         startWorker();
       }
@@ -70,7 +70,7 @@ module.exports.startCluster = function (startService, app) {
       }
     });
 
-    console.log(`master starting ${numCores} workers`);
+    console.log(`master starting ${numCores} workers 🌎`);
     // Run a copy of this program on each core
     for (let i = 0; i < numCores; i++) {
       startWorker();

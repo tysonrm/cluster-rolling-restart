@@ -31,31 +31,31 @@ require("../src/index").startCluster(startServer, app);
 > start
 > node test/server.js
 
-master starting 8 workers
-worker up 75693
-worker up 75692
-worker up 75694
-worker up 75695
-worker up 75697
-worker up 75696
-worker up 75698
-worker up 75699
-reload requested
-worker down
-worker up 75702
-worker down
-worker up 75703
-worker down
-worker up 75704
-worker down
-worker up 75705
-worker down
-worker up 75706
-worker down
-worker up 75707
-worker down
-worker up 75708
-worker down
-worker up 75709
-reload complete
+master starting 8 workers 🌎
+worker up 77012
+worker up 77013
+worker up 77014
+worker up 77015
+worker up 77018
+worker up 77016
+worker up 77017
+worker up 77019
+reload requested 👍
+worker down 🔻
+worker up 77023
+worker down 🔻
+worker up 77024
+worker down 🔻
+worker up 77025
+worker down 🔻
+worker up 77026
+worker down 🔻
+worker up 77027
+worker down 🔻
+worker up 77028
+worker down 🔻
+worker up 77029
+worker down 🔻
+worker up 77030
+reload complete ✅
 ```
