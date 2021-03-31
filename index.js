@@ -53,32 +53,25 @@ function continueReload() {
 }
 
 /**
- * Runs a copy of `startService(app)` on each core of the machine.
+ * Runs a copy of `startService` on each core of the machine.
  * Processes share the server port and requests are distributed
  * round-robin.
  *
- * @param {function(app)} startService - a callback that starts your app
- * @param {express} app - express app, i.e. `startService(app)`
- * @param {number} [waitms] - Optional. 2000ms by default. Wait `waitms`
- * milliseconds between start and stop to allow time for your app to come up.
  * ```js
  * const cluster = require("cluster-rolling-restart");
  * const express = require("express");
  * const app = express();
  *
- * app.get("/", (req, res) => res.send(`<h1>Hi from pid ${process.pid}</h1>`));
+ * app.get("/", (req, res) => res.send(`I'm pid ${process.pid}`));
  *
- * app.get("/reload", (req, res) => {
- *  res.send("performing rolling restart of cluster");
- *  process.send({ cmd: "reload" });
- * });
+ * app.get("/reload", (req, res) => process.send({ cmd: "reload" }));
  *
- * function startServer(app) {
- *  app.listen(8080);
- * }
- *
- * cluster.startCluster(startServer, app);
+ * cluster.startCluster(() => app.listen(8080));
  * ```
+ *
+ * @param {function(app)} startService - a callback that starts your app
+ * @param {number} [waitms] - Wait `waitms` milliseconds between start
+ * and stop to allow time for your app to come up. Default is 2000 ms.
  */
 module.exports.startCluster = function (startService, waitms = 2000) {
   if (cluster.isMaster) {
@@ -105,6 +98,6 @@ module.exports.startCluster = function (startService, waitms = 2000) {
     }
   } else {
     // this is a worker, run the service.
-    startService(app);
+    startService();
   }
 };

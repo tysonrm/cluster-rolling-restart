@@ -2,7 +2,7 @@
 
 A simple way to turn express into a clustered server with support for rolling restart.
 
-## install
+## Install
 
 ```shell
 npm install cluster-rolling-restart
@@ -15,18 +15,11 @@ const cluster = require("cluster-rolling-restart");
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => res.send(`<h1>Hi from pid ${process.pid}</h1>`));
+app.get("/", (req, res) => res.send(`I'm pid ${process.pid}`));
 
-app.get("/reload", (req, res) => {
-  res.send("performing rolling restart of cluster");
-  process.send({ cmd: "reload" });
-});
+app.get("/reload", (req, res) => process.send({ cmd: "reload" }));
 
-function startServer(app) {
-  app.listen(8080);
-}
-
-cluster.startCluster(startServer, app, 1000);
+cluster.startCluster(() => app.listen(8080));
 ```
 
 ## output
@@ -49,7 +42,7 @@ worker up 77656
 worker up 77659
 ```
 
-## trigger restart
+## request restart
 
 ```shell
 > curl http://localhost:8080/reload
