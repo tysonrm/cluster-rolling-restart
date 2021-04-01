@@ -1,6 +1,6 @@
 # cluster-rolling-restart
 
-A simple way to turn express into a clustered server with support for rolling restart.
+A simple way to turn express into a clustered server with support for rolling restart and cache synchronization.
 
 ## Install
 
@@ -69,4 +69,44 @@ worker up 77668
 worker down 77652
 worker up 77669
 reload complete ✅
+```
+
+## Using Cache Synchronization
+
+To use cache synchronization, you send the data you want to cache to the master process. You then listen for events from the master, and when a `saveCommand` event arrives, you update your cache with the data in the event.
+
+Send data to save to master...
+
+```js
+ async save(id, data) {
+    if (clusterEnabled) {
+      process.send({
+        cmd: "saveBroadcast",
+        pid: process.pid,
+        id,
+        data,
+        name: this.name,
+      });
+    }
+    return this.dataSource.set(id, data).get(id);
+  }
+```
+
+Listen for save event and update cache...
+
+```js
+process.on("message", ({ cmd, id, pid, data, name }) => {
+  if (cmd && id && data && process.pid !== pid) {
+    if (cmd === "saveCommand") {
+      const ds = DataSourceFactory.getDataSource(name);
+      ds.clusterSave(id, ModelFactory.loadModel(observer, ds, data, name));
+      return;
+    }
+    if (cmd === "deleteCommand") {
+      const ds = DataSourceFactory.getDataSource(name);
+      ds.clusterDelete(id);
+      return;
+    }
+  }
+});
 ```
