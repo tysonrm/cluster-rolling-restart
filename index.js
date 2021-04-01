@@ -29,15 +29,38 @@ function startWorker() {
     }
   });
 
+  worker.on("message", function (message) {
+    if (message.cmd === "reset-reload") {
+      reloading = false;
+      console.log("reload status reset to false");
+    }
+  });
+
+  worker.on("message", function (message) {
+    // console.log({ ...message, data: "..." });
+    if (message.pid === process.pid) return;
+    if (["saveBroadcast", "deleteBroadcast"].includes(message.cmd)) {
+      for (const id in cluster.workers) {
+        if (cluster.workers[id].process.pid !== message.pid) {
+          cluster.workers[id].send({
+            ...message,
+            pid: process.pid,
+            cmd: message.cmd.replace("Broadcast", "Command"),
+          });
+        }
+      }
+    }
+  });
+
   workerList.push(worker);
 }
 
 /**
  * Gracefully stop a worker on the reload list.
  */
-function stopWorker(waitms = 2000) {
+function stopWorker() {
   const worker = reloadList.pop();
-  if (worker) setTimeout(() => worker.kill("SIGTERM"), waitms);
+  if (worker) worker.kill("SIGTERM");
   else {
     reloading = false;
     console.log("reload complete ✅");
@@ -45,30 +68,32 @@ function stopWorker(waitms = 2000) {
 }
 
 /**
- * Checks status of reload
+ * Control execution of stop/start request
  * @returns {boolean} true to continue, otherwise stop
  */
-function continueReload() {
-  return reloading;
+function continueReload(callback, waitms) {
+  if (
+    reloading ||
+    (workerList.length < numCores && callback.name.includes("start"))
+  ) {
+    setTimeout(() => callback(), waitms);
+  }
 }
 
 /**
  * Runs a copy of `startService` on each core of the machine.
- * Processes share the server port and requests are distributed
- * round-robin.
- *
+ * Processes share file descriptors (including sockets) and take turns
+ * handling requests from the server port in round-robin fashion.
  * ```js
  * const cluster = require("cluster-rolling-restart");
  * const express = require("express");
  * const app = express();
  *
  * app.get("/", (req, res) => res.send(`I'm pid ${process.pid}`));
- *
  * app.get("/reload", (req, res) => process.send({ cmd: "reload" }));
  *
  * cluster.startCluster(() => app.listen(8080));
  * ```
- *
  * @param {function(app)} startService - a callback that starts your app
  * @param {number} [waitms] - Wait `waitms` milliseconds between start
  * and stop to allow time for your app to come up. Default is 2000 ms.
@@ -78,17 +103,13 @@ module.exports.startCluster = function (startService, waitms = 2000) {
     // Worker stopped. If reloading, start a new one.
     cluster.on("exit", function (worker) {
       console.log("worker down", worker.process.pid);
-      if (continueReload()) {
-        startWorker();
-      }
+      continueReload(startWorker, waitms);
     });
 
     // Worker started. If reloading, stop the next one.
     cluster.on("online", function (worker) {
       console.log("worker up", worker.process.pid);
-      if (continueReload()) {
-        stopWorker(waitms);
-      }
+      continueReload(stopWorker, 0);
     });
 
     console.log(`master starting ${numCores} workers 🌎`);
