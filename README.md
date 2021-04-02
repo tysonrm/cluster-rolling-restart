@@ -4,6 +4,8 @@ A simple way to turn express into a clustered server with support for rolling re
 
 ## Install
 
+![install](https://www.npmjs.com/package/cluster-rolling-restart)
+
 ```shell
 npm install cluster-rolling-restart
 ```
@@ -16,8 +18,8 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => res.send(`I'm pid ${process.pid}`));
-
 app.get("/reload", (req, res) => process.send({ cmd: "reload" }));
+app.get("/reload-reset", (req, res) => process.send({ cmd: "reload-reset" }));
 
 cluster.startCluster(() => app.listen(8080));
 ```
