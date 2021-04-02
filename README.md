@@ -2,7 +2,7 @@
 
 A simple way to turn express into a clustered server with support for rolling restart and cache synchronization.
 
-## Install [<img src="https://github.com/tysonrm/cluster-rolling-restart/blob/main/npm-tile.png" style="hieght: 24px;width: 24px">](https://www.npmjs.com/package/cluster-rolling-restart)
+## [<img src="https://github.com/tysonrm/cluster-rolling-restart/blob/main/npm-tile.png" style="hieght: 24px;width: 24px">](https://www.npmjs.com/package/cluster-rolling-restart) Install
 
 ```shell
 npm install cluster-rolling-restart
