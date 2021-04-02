@@ -4,7 +4,7 @@ A simple way to turn express into a clustered server with support for rolling re
 
 ## Install
 
-[<img src="https://github.com/tysonrm/cluster-rolling-restart/blob/main/npm.png" style="hieght: 24px;width: 24px">](https://www.npmjs.com/package/cluster-rolling-restart)
+[<img src="https://github.com/tysonrm/cluster-rolling-restart/blob/main/npm-tile.png" style="hieght: 24px;width: 24px">](https://www.npmjs.com/package/cluster-rolling-restart)
 
 ```shell
 npm install cluster-rolling-restart
